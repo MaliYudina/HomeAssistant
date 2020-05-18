@@ -1,9 +1,15 @@
+import org.json.JSONObject;
+import org.json.JSONString;
+import org.json.JSONStringer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+
 
 public class Assistant {
     private static HttpURLConnection connection;
@@ -13,6 +19,8 @@ public class Assistant {
         BufferedReader reader;
         String line;
         StringBuffer responseContent = new StringBuffer();
+//        String jsonResponse;
+
 
         try {
             String link = "http://192.168.10.98";
@@ -37,6 +45,13 @@ public class Assistant {
                 reader.close();
             }
             System.out.println(responseContent.toString());
+            String jsonString = responseContent.toString();
+
+            JSONObject obj = new JSONObject(jsonString);
+            JSONObject meters_data = obj.getJSONObject("readings");
+            JSONObject hum = meters_data.getJSONObject("humidity");
+            System.out.println(hum);
+
         } catch (
                 MalformedURLException e) {
             e.printStackTrace();
